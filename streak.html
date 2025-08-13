@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marosha</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+        body {
+            background-color: #6a4040;
+            color: #fff;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .animated-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg,
+                hsl(0, 80%, 40%),
+                hsl(30,100%, 50%),
+                hsl(60, 80%, 40%),
+                hsl(120, 80%, 40%),
+                hsl(180, 80%, 40%),
+                hsl(240, 80%, 40%),
+                hsl(360, 80%, 40%),
+                 hsl(300, 80%, 40%),
+                hsl(55,80%, 40%),
+                hsl(30,100%, 50%),
+                hsl(60,40%,85%),
+                hsl(280, 95%, 46%)
+            );
+            background-size: 400% 400%;
+            animation: moveGradient 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card-wrapper {
+            perspective: 1000px;
+            position: relative;
+            width: 320px;
+            height: 460px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease-out;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(22, 4, 26, 0.5);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #a27575;
+            background-color: #1160bb;
+
+            /* **إضافة الخصائص لمنع النسخ** */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        .card-front .card-text {
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(136, 56, 56, 0.5);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #e469c7;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .card-back .card-text {
+            color: #ffffff;
+            font-size: 18.5px;
+            text-shadow: 5px 3px 2px rgba(136, 56, 56, 0.5);
+            margin-top: auto; 
+            margin-bottom: auto;
+            padding: 0 20px;
+        }
+        
+        .back-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .separator {
+            width: 70%;
+            height: 0.5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            margin: 8px 0;
+        }
+        
+        .celebration-text {
+            color: #fbff00;
+            font-size: 10px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+<div class="animated-background"></div>
+
+<div class="card-wrapper">
+    <div class="card" id="interactiveCard">
+        <div class="card-face card-front">
+            <div class="card-text"> كل الأيام بجانبكِ تكسوها الرحابة وكل الضحكات معكِ استثنائية</div>
+        </div>
+        <div class="card-face card-back">
+            <div class="card-text"> مئة يوم مرّوا، وكل يوم فيهم كنتِ البهجة اللي ماتنطفي, يا أرق مريم </div>
+            <div class="back-content">
+                <div class="separator"></div>
+                <div class="celebration-text"> 100 strike with you my lovely girl 💘🔥 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cardWrapper = document.querySelector('.card-wrapper');
+    const card = document.getElementById('interactiveCard');
+
+    let autoFlipInterval;
+    let autoFlipTimeout;
+
+    // دالة لبدء الدوران التلقائي
+    function startAutoFlip() {
+        if (!autoFlipInterval) {
+            autoFlipInterval = setInterval(() => {
+                card.classList.toggle('flipped');
+            }, 5000); // تدور كل 5 ثوانٍ
+        }
+    }
+
+    // دالة لإيقاف الدوران التلقائي
+    function stopAutoFlip() {
+        clearInterval(autoFlipInterval);
+        clearTimeout(autoFlipTimeout);
+        autoFlipInterval = null;
+        autoFlipTimeout = null;
+    }
+
+    // ابدأ الدوران التلقائي عند تحميل الصفحة
+    window.onload = startAutoFlip;
+
+    // **إضافة تفاعل النقر/اللمس لقلب البطاقة**
+    function handleFlip() {
+        stopAutoFlip();
+        card.classList.toggle('flipped');
+
+        // استئناف الدوران التلقائي بعد فترة من آخر تفاعل
+        autoFlipTimeout = setTimeout(startAutoFlip, 10000); // 10 ثواني
+    }
+
+    cardWrapper.addEventListener('click', handleFlip);
+    cardWrapper.addEventListener('touchstart', handleFlip);
+    
+
+    // **تأثير الدوران ثلاثي الأبعاد (عند تحريك الماوس/اللمس)**
+    function handleOrientation(e) {
+        // إذا كانت البطاقة مقلوبة، لا تطبق تأثير الدوران
+        if (card.classList.contains('flipped')) {
+            return;
+        }
+        
+        const rect = cardWrapper.getBoundingClientRect();
+        const x = e.clientX || e.touches[0].clientX;
+        const y = e.clientY || e.touches[0].clientY;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateX = (y - centerY) / 50;
+        const rotateY = (x - centerX) / -50;
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    }
+
+    cardWrapper.addEventListener('mousemove', handleOrientation);
+    cardWrapper.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        handleOrientation(e);
+    });
+
+    cardWrapper.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+    
+    cardWrapper.addEventListener('touchend', () => {
+        card.style.transform = '';
+    });
+
+    // **كود منع النسخ باستخدام JavaScript**
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('copy', event => event.preventDefault());
+    document.addEventListener('cut', event => event.preventDefault());
+</script>
+
+</body>
+</html>
